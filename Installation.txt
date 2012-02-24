@@ -1,0 +1,71 @@
+CONFIGURE APACHE TOMCAT
+- Add admin user and password to the Tomcat
+  Edit the bin/tomcat-users.xml under the tomcat installation directory and add the following lines:
+
+  <role rolename="sesame-admin"/>
+  <user username="<YOUR_USERNAME>" password="<PASSWORD>" roles="sesame-admin"/>
+
+CONFIGURE SESAME SERVER
+- Add the security to the openrdf-workbench application. Edit webapps/openrdf-workbench/WEB-INF/web.xml under the tomcat installation directory
+       <security-constraint>
+		<web-resource-collection>
+			<web-resource-name>config</web-resource-name>
+			<url-pattern>/repositories/SYSTEM</url-pattern>
+			<url-pattern>/repositories/SYSTEM/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>sesame-admin</role-name>
+		</auth-constraint>
+	</security-constraint>
+        <security-constraint>
+		<web-resource-collection>
+			<web-resource-name>config</web-resource-name>
+			<url-pattern>/*</url-pattern>
+                        <http-method>POST</http-method>
+                        <http-method>PUT</http-method>
+                        <http-method>DELETE</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>sesame-admin</role-name>
+		</auth-constraint>
+	</security-constraint>
+
+	<login-config>
+		<auth-method>BASIC</auth-method>
+		<realm-name>Sesame server configuration</realm-name>
+	</login-config>
+
+	<security-role>
+		<description>
+			The role that is required to access the Sesame server configuration
+		</description>
+		<role-name>sesame-admin</role-name>
+	</security-role>
+
+CREATE THE STARTUP SCRIPT
+- Create 'sbolstack' file with the content below:
+
+  export JAVA_HOME=/usr/lib/jvm/java-6-sun
+
+  case $1 in
+  start)
+        sh /usr/local/apache-tomcat-7.0.25/bin/startup.sh
+        ;;
+  stop)
+        sh /usr/local/apache-tomcat-7.0.25/bin/shutdown.sh
+        ;;
+  restart)
+        sh /usr/local/apache-tomcat-7.0.25/bin/shutdown.sh
+        sh /usr/local/apache-tomcat-7.0.25/bin/startup.sh
+        ;;
+  esac
+  exit 0
+
+- Make the file executable
+  chmod 755 sbolstack
+
+- To start the RDF repository, use the command below:
+  ./sbolstack start
+
+- To stop the RDF repository, use the command below:
+  ./sbolstack stop
