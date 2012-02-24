@@ -46,6 +46,7 @@ CREATE THE STARTUP SCRIPT
 - Create 'sbolstack' file with the content below:
 
   export JAVA_HOME=/usr/lib/jvm/java-6-sun
+  export JAVA_OPTS="-Xms256M -Xmx1024M -DentityExpansionLimit=500000"
 
   case $1 in
   start)
