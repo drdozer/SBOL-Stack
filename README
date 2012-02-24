@@ -1,0 +1,5 @@
+- To start the RDF repository, use the command below:
+  ./sbolstack start
+
+- To stop the RDF repository, use the command below:
+  ./sbolstack stop
