@@ -20,8 +20,7 @@ CONFIGURE SESAME SERVER
         <security-constraint>
 		<web-resource-collection>
 			<web-resource-name>config</web-resource-name>
-			<url-pattern>/*</url-pattern>
-                        <http-method>POST</http-method>
+			<url-pattern>/*</url-pattern>                        
                         <http-method>PUT</http-method>
                         <http-method>DELETE</http-method>
 		</web-resource-collection>
